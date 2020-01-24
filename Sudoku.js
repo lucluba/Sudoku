@@ -196,6 +196,47 @@ while (checkEnd !== 0) {
     arrayOfUndefined = createArrayOfUndefined(sudokuArray);
     checkEnd = arrayOfUndefined.length;
 
+    if (checkStart === checkEnd) {
+        // console.log("I'm stuck :(");
+        iAmStuck += 1;
+        for (let i = 0; i < 9; i += 3) {
+            for (let j = 0; j < 9; j += 3) {
+                const whatSize = squareArray(sudokuArray, i, j);
+                if (whatSize.length === 8) {
+                    let fullValueArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                    let onlyValue;
+
+                    fullValueArray.forEach(element => {
+                        let unique = 0;
+                        whatSize.forEach(item => {
+                            if (element === item) {
+                                unique = 1;
+                            }
+                        });
+                        if (unique === 0) {
+                            onlyValue = element;
+                        }
+                    });
+
+                    let onlyValuePlace;
+                    for (n = i; n < i + 3; n++) {
+                        for (m = j; m < j + 3; m++) {
+                            if (!!!sudokuArray[n][m]) {
+                                onlyValuePlace = {
+                                    value: onlyValue,
+                                    line: n,
+                                    column: m
+                                };
+                                sudokuArray[onlyValuePlace.line][onlyValuePlace.column] = onlyValuePlace.value;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 console.log("I think I've solved it");
 console.table(sudokuArray);
