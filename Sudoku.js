@@ -236,6 +236,69 @@ while (checkEnd !== 0) {
             }
         }
     }
+     if (iAmStuck > 1) {
+
+        // console.log("I am stuck at least once");
+        let valueToSolve = arrayOfUndefined.length;
+
+        for (let i = 0; i < valueToSolve; i++) {
+            let posX = arrayOfUndefined[i].line;
+            let posY = arrayOfUndefined[i].column;
+
+
+            let arrayOfLinesColumns = [];
+            let arrayOfAllValuesLinesColumns = [];
+
+            switchSet(posX, arrayOfLinesColumns);
+            switchSet(posY, arrayOfLinesColumns);
+
+            for (let k = 0; k < 4; k++) {
+                switch (k) {
+                    case 0:
+                    case 1: {
+                        let partArray = [];
+                        partArray = lineArray(sudokuArray, arrayOfLinesColumns[k]);
+
+                        partArray.forEach(item => {
+                            arrayOfAllValuesLinesColumns.push(item);
+                        });
+                    };
+                        break;
+                    case 2:
+                    case 3: {
+                        let partArray = [];
+                        partArray = columnArray(sudokuArray, arrayOfLinesColumns[k]);
+
+                        partArray.forEach(item => {
+                            arrayOfAllValuesLinesColumns.push(item);
+                        });
+                    };
+                        break;
+                }
+            }
+
+            let squarePosition = setSValues(arrayOfUndefined[i]);
+
+            let newArray = squareArray(sudokuArray, squarePosition[0], squarePosition[1]);
+
+            let uniqueValuesArray = uniqueValues(newArray);
+
+            let valueToFill = undefined;
+
+            uniqueValuesArray.forEach(element => {
+                let checkValueIssue = 0;
+                arrayOfAllValuesLinesColumns.forEach(item => {
+                    if (element === item) {
+                        checkValueIssue++;
+                    }
+                    if (checkValueIssue === 4) {
+                        valueToFill = element;
+                        sudokuArray[posX][posY] = valueToFill;
+                    }
+                });
+            });
+        }
+    }
 
 }
 console.log("I think I've solved it");
